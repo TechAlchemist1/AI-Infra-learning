@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AI Infra Learning</title>
+  </head>
+  <body>
+    <input type="text" id="promptInput" placeholder="Use Ollama..." />
+
+    <button type="submit" id="submitBtn">Submit</button>
+
+    <p id="result"></p>
+
+    <script>
+      document
+        .getElementById("submitBtn")
+        .addEventListener("click", function () {
+          const promptValue = document.getElementById("promptInput").value;
+          const payload = { prompt: promptValue };
+          fetch("/spice", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          })
+            .then(function (res) {
+              return res.json();
+            })
+            .then(function (text) {
+              document.getElementById("result").innerText = text.response;
+            });
+        });
+    </script>
+  </body>
+</html>
