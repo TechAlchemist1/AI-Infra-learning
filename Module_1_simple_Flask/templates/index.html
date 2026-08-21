@@ -17,6 +17,7 @@
         .addEventListener("click", function () {
           const promptValue = document.getElementById("promptInput").value;
           const payload = { prompt: promptValue };
+
           fetch("/spice", {
             method: "POST",
             headers: {
@@ -27,8 +28,25 @@
             .then(function (res) {
               return res.json();
             })
-            .then(function (text) {
-              document.getElementById("result").innerText = text.response;
+            .then(function (data) {
+              document.getElementById("result").innerText =
+                data.response +
+                "\n\nTotal Latency: " +
+                data.latency +
+                " seconds" +
+                "\nLoad Time: " +
+                data.load_duration +
+                " seconds" +
+                "\nPrefill Time: " +
+                data.prompt_duration +
+                " seconds" +
+                "\nDecode Time: " +
+                data.decode_duration +
+                " seconds" +
+                "\nInput Tokens: " +
+                data.prompt_tokens +
+                "\nOutput Tokens: " +
+                data.output_tokens;
             });
         });
     </script>
