@@ -1,4 +1,3 @@
 timestamp,label,model,options,keep_alive,cold_start_load_s,short_latency_mean,short_decode_tok_s,medium_latency_mean,medium_decode_tok_s,long_latency_mean,long_decode_tok_s
-2026-08-21T18:43:46.824480+00:00,baseline,qwen2.5:3b,"{""num_predict"": 50}",,0.270,2.572,22.9,2.736,22.8,2.885,22.5
-2026-08-21T18:44:50.855348+00:00,thread8_keepalive,qwen2.5:3b,"{""num_predict"": 50, ""num_thread"": 8}",30m,3.698,1.942,29.6,2.082,29.0,2.386,27.0
-2026-08-21T18:45:34.294938+00:00,thread4_control,qwen2.5:3b,"{""num_predict"": 50, ""num_thread"": 4}",30m,2.823,2.548,22.7,2.864,22.9,3.108,22.2
+2026-08-21T19:44:19.598414+00:00,cpu_default,qwen2.5:3b,"{""num_predict"": 50}",30m,3.703,2.706,21.7,2.882,21.5,3.015,21.7
+2026-08-21T19:45:43.355956+00:00,cpu_optimized,qwen2.5:3b,"{""num_predict"": 50, ""num_thread"": 8}",30m,2.944,2.425,24.0,2.575,23.4,2.744,23.0
