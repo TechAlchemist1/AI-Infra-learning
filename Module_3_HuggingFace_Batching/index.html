@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Local LLM Tester</title>
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 700px;
+        margin: 60px auto;
+        padding: 20px;
+        background: white;
+        color: black;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      textarea {
+        width: 100%;
+        height: 150px;
+        padding: 12px;
+        font-size: 16px;
+        box-sizing: border-box;
+        resize: vertical;
+      }
+
+      button {
+        margin-top: 12px;
+        padding: 10px 18px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      #output {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #ccc;
+        white-space: pre-wrap;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Local LLM Tester</h1>
+
+    <textarea id="prompt" placeholder="Enter a prompt..."></textarea>
+
+    <br />
+
+    <button id="sendButton">Generate</button>
+
+    <div id="output"></div>
+
+    <script>
+      const button = document.getElementById("sendButton");
+      const promptBox = document.getElementById("prompt");
+      const output = document.getElementById("output");
+
+      button.addEventListener("click", async () => {
+        const prompt = promptBox.value.trim();
+
+        if (!prompt) {
+          output.textContent = "Enter a prompt first.";
+          return;
+        }
+
+        output.textContent = "Generating...";
+        button.disabled = true;
+
+        try {
+          const response = await fetch("http://127.0.0.1:8000/generate", {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json",
+            },
+
+            body: JSON.stringify({
+              prompt: prompt,
+              max_new_tokens: 40,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Server returned status " + response.status);
+          }
+
+          const data = await response.json();
+
+          output.textContent =
+            data.response +
+            "\n\n--------------------" +
+            "\nMetrics" +
+            "\n--------------------" +
+            "\nInput tokens: " +
+            data.metrics.input_tokens +
+            "\nOutput tokens: " +
+            data.metrics.output_tokens +
+            "\nTokenization: " +
+            data.metrics.tokenization_seconds +
+            "s" +
+            "\nGeneration: " +
+            data.metrics.generation_seconds +
+            "s" +
+            "\nDecode: " +
+            data.metrics.decode_seconds +
+            "s" +
+            "\nTotal: " +
+            data.metrics.total_seconds +
+            "s";
+        } catch (error) {
+          output.textContent = "Error: " + error.message;
+        } finally {
+          button.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>
